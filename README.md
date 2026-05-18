@@ -1,6 +1,6 @@
 # EVE 藏宝阁本地检索工具
 
-这是一个为 EVE Echoes（星战前夜）玩家设计的藏宝阁角色检索工具。它通过爬取藏宝阁网站上的角色数据，并提供一个图形用户界面（GUI），让用户可以根据多种条件在本地快速检索和筛选角色，从而找到心仪的账号。
+这是一个为 EVE Echoes（星战前夜·无烬星河）玩家设计的藏宝阁角色检索工具。它通过爬取藏宝阁网站上的角色数据，并提供一个图形用户界面（GUI），让用户可以根据多种条件在本地快速检索和筛选角色，从而找到心仪的账号。
 
 ## 主要功能
 
@@ -20,6 +20,7 @@
     - 要求植入体的型号（如“标准型”、“进阶型”）。
     - 要求植入体的最低等级。
     - 支持设置多个植入体规则，角色必须同时满足所有规则。
+  - **纳米核心过滤条件**：支持通配符 `*` 匹配
 
 - **图形用户界面 (GUI)**：
   - 使用 Tkinter 构建，界面直观，易于上手。
@@ -36,9 +37,9 @@
 ## 如何使用
 
 1. **环境准备**：
-   - 下载并解压（ [Evem_CBG_SearchPlus_V2.1.zip](https://github.com/SakikoTogawa0214/EVEM_CBG_SearchPlus/blob/main/Evem_CBG_SearchPlus_V2.1.zip) ）
+   - 下载（ [Evem_CBG_SearchPlus_V2.2.exe](https://github.com/SakikoTogawa0214/EVEM_CBG_SearchPlus/blob/main/dist/EVEM_CBG_SearchPlus_V2.2.exe) ）
    - 确保已安装 Google Chrome 浏览器。
-   - 运行 `EVE藏宝阁检索系统V2.1` 启动程序。
+   - 运行 `EVE藏宝阁检索系统V2.2` 启动程序。
 
 3. **启动浏览器并登录**：
    - 点击 **[🌐 检测环境]** 按钮。如果提示“未连接”，程序会询问是否启动 Chrome。
