@@ -24,7 +24,7 @@ else:
 DB_FILE = os.path.join(BASE_DIR, "eve_full_data.json")
 
 # --- 版本更新检查配置 ---
-CURRENT_VERSION = "2.2"
+CURRENT_VERSION = "2.2.1"
 GITHUB_REPO = "SakikoTogawa0214/EVEM_CBG_SearchPlus"
 GITHUB_PAGE = "https://github.com/SakikoTogawa0214/EVEM_CBG_SearchPlus"
 
@@ -242,13 +242,14 @@ class ImplantListEditDialog(tk.Toplevel):
 class EveSearchApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("EVE 藏宝阁检索系统 V2.2 - by SakikoTogawa0214")
+        self.root.title("EVE 藏宝阁检索系统 V2.2.1 - by SakikoTogawa0214")
         self.root.geometry("1300x980")
         center_window(self.root, self.root, 1300, 980)
 
         self.all_data = {}
         self.filtered_data = {}
         self.filter_lists = {"skill": [], "global": [], "imp": [], "nanocore": []}
+        self.sort_states = {}  # col -> "asc" | "desc"
 
         self.load_data()
         self.build_ui()
@@ -335,8 +336,12 @@ class EveSearchApp:
         main_pane.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
         self.tree = ttk.Treeview(main_pane, columns=("id", "name", "price", "sp", "ins", "reset_sp", "free_sp"), show="headings")
+        sortable_cols = {"price", "sp", "ins", "reset_sp", "free_sp"}
         for col, head in zip(self.tree["columns"], ["编号", "角色昵称", "价格", "总技能点", "保险点", "洗点", "自由点"]):
-            self.tree.heading(col, text=head)
+            if col in sortable_cols:
+                self.tree.heading(col, text=head, command=lambda c=col: self.sort_treeview(c))
+            else:
+                self.tree.heading(col, text=head)
         self.tree.column("id", width=80, anchor=tk.E)
         self.tree.column("name", width=150, anchor=tk.E)
         self.tree.column("price", width=80, anchor=tk.E)
@@ -392,6 +397,10 @@ class EveSearchApp:
 
         for item in self.tree.get_children(): self.tree.delete(item)
         self.filtered_data = {}
+        self.sort_states = {}
+        col_names = {"price": "价格", "sp": "总技能点", "ins": "保险点", "reset_sp": "洗点", "free_sp": "自由点"}
+        for c, name in col_names.items():
+            self.tree.heading(c, text=name)
         self.load_data()
 
         for sn, acc in self.all_data.items():
@@ -449,6 +458,40 @@ class EveSearchApp:
             ))
 
         self.status_var.set(f" 总量: {len(self.all_data)} | 符合当前要求: {len(self.filtered_data)}")
+
+    def sort_treeview(self, col):
+        """点击列头排序：升序/降序切换"""
+        col_names = {"price": "价格", "sp": "总技能点", "ins": "保险点", "reset_sp": "洗点", "free_sp": "自由点"}
+        col_idx = {"price": 2, "sp": 3, "ins": 4, "reset_sp": 5, "free_sp": 6}[col]
+
+        # 获取所有行数据，解析数值
+        rows = []
+        for item in self.tree.get_children(""):
+            vals = self.tree.item(item, "values")
+            raw = vals[col_idx]
+            if col == "price":
+                num = float(raw.lstrip("¥").replace(",", ""))
+            else:
+                num = int(raw.replace(",", ""))
+            rows.append((num, item))
+
+        reverse = self.sort_states.get(col) == "asc"
+        rows.sort(key=lambda x: x[0], reverse=reverse)
+
+        # 重新排列
+        for i, (_, item) in enumerate(rows):
+            self.tree.move(item, "", i)
+
+        # 更新排序状态
+        new_state = "desc" if reverse else "asc"
+        self.sort_states = {c: "" for c in col_names}  # 清除其他列的状态
+        self.sort_states[col] = new_state
+
+        # 更新列头显示
+        arrow = " ▲" if new_state == "asc" else " ▼"
+        for c, name in col_names.items():
+            suffix = arrow if c == col else ""
+            self.tree.heading(c, text=name + suffix)
 
     # ================= 爬虫与环境控制 =================
 

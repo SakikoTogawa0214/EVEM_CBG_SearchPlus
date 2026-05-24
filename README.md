@@ -37,9 +37,9 @@
 ## 如何使用
 
 1. **环境准备**：
-   - 下载（ [Evem_CBG_SearchPlus_V2.2.exe](https://github.com/SakikoTogawa0214/EVEM_CBG_SearchPlus/blob/main/dist/EVEM_CBG_SearchPlus_V2.2.exe) ）
+   - 下载（ [Evem_CBG_SearchPlus_V2.2.1.exe](https://github.com/SakikoTogawa0214/EVEM_CBG_SearchPlus/blob/main/dist/EVEM_CBG_SearchPlus_V2.2.1.exe) ）
    - 确保已安装 Google Chrome 浏览器。
-   - 运行 `EVE藏宝阁检索系统V2.2` 启动程序。
+   - 运行 `EVE藏宝阁检索系统V2.2.1` 启动程序。
 
 3. **启动浏览器并登录**：
    - 点击 **[🌐 检测环境]** 按钮。如果提示“未连接”，程序会询问是否启动 Chrome。
